@@ -4,25 +4,19 @@ workflows:
     max_build_duration: 60
     environment:
       flutter: 3.24.5
-      java: 17
+      java: 17 # Java 17 zyada stable hai Flutter 3.24 ke liye
     scripts:
-      - name: Print versions
-        script: |
-          flutter --version
-          java -version
       - name: Get Flutter packages
         script: flutter pub get
       - name: Build release APK
         script: |
-          flutter build apk --release \
-            --target-platform android-arm,android-arm64,android-x64 \
-            --android-skip-build-dependency-validation
+          # Clean purana build
+          flutter clean
+          # Simple release build bina extra flags ke taaki error na aaye
+          flutter build apk --release
     artifacts:
-      - build/app/outputs/flutter-apk/*.apk
+      - build/app/outputs/flutter-apk/app-release.apk
     publishing:
       email:
         recipients:
           - rekhaji7172@gmail.com
-        notify:
-          success: true
-          failure: true
